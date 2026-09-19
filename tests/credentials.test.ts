@@ -1,5 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, renameSync } from "node:fs";
 import { normalizeApiKey, keySituation, credentialsPath, piTinySearchDir } from "../src/credentials.js";
 
 describe("credentials", () => {
@@ -35,9 +36,18 @@ describe("credentials", () => {
   it("keySituation returns missing when no key is set", () => {
     const saved = process.env.TINYSEARCH_API_KEY;
     delete process.env.TINYSEARCH_API_KEY;
-    const situation = keySituation();
-    assert.equal(situation.kind, "missing");
-    if (saved !== undefined) process.env.TINYSEARCH_API_KEY = saved;
+    // Temporarily move auth.json aside so stored key doesn't interfere
+    const credPath = credentialsPath();
+    const backup = credPath + ".test-backup";
+    const hadFile = existsSync(credPath);
+    if (hadFile) renameSync(credPath, backup);
+    try {
+      const situation = keySituation();
+      assert.equal(situation.kind, "missing");
+    } finally {
+      if (hadFile) renameSync(backup, credPath);
+      if (saved !== undefined) process.env.TINYSEARCH_API_KEY = saved;
+    }
   });
 
   it("keySituation returns environment when env var is set", () => {
