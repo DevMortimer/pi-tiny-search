@@ -1,0 +1,77 @@
+{
+  "name": "pi-tiny-search",
+  "version": "0.1.0",
+  "description": "Instant web search and page fetching for Pi via Monid/TinyFish. No browser, no LLM summarization — just fast structured results.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Ryan Gapac",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevMortimer/pi-tiny-search.git"
+  },
+  "homepage": "https://github.com/DevMortimer/pi-tiny-search#readme",
+  "bugs": "https://github.com/DevMortimer/pi-tiny-search/issues",
+  "funding": "https://github.com/sponsors/DevMortimer",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "web-search",
+    "tinyfish",
+    "monid",
+    "fetch"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./extension": {
+      "types": "./dist/extension.d.ts",
+      "import": "./dist/extension.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "extensions",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/index.js"
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:live": "node --env-file-if-exists=.env scripts/live-smoke.mjs",
+    "dev:pi": "node scripts/dev-pi.mjs",
+    "check": "npm run typecheck && npm test && npm run build",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.85.1 <1",
+    "@earendil-works/pi-tui": ">=0.85.1 <1"
+  },
+  "peerDependenciesMeta": {
+    "@earendil-works/pi-coding-agent": {
+      "optional": true
+    },
+    "@earendil-works/pi-tui": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@earendil-works/pi-tui": "^0.85.1",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.0"
+  }
+}
