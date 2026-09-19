@@ -64,7 +64,7 @@ Fire multiple requests in parallel. Effective latency = wall time / count.
 ## Setup
 
 ```bash
-npm install pi-tiny-search
+pi install npm:pi-tiny-search
 ```
 
 Then run `/tiny-search login` in Pi to configure your Monid API key. Or set `TINYSEARCH_API_KEY` in your environment.
