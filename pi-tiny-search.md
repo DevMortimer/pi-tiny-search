@@ -44,6 +44,15 @@ notification must be safe to display. Do not leak the API key in error messages 
 New keys get a default in `defaultConfig()`, a fallback in the config schema, and one line
 in `docs/configuration.md`.
 
+# API request bodies must be clean
+Only include fields defined in the Monid/TinyFish API schema. Unknown fields cause HTTP 400.
+Do not forward internal metadata (tags, categorization fields) into API requests.
+
+# Tests must not depend on developer machine state
+Tests that check `keySituation()` or credential presence must temporarily isolate the auth.json
+file. The stored key always exists on developer machines — a test that assumes it does not
+will pass in CI but fail locally (or vice versa).
+
 # Do not run destructive commands that erase uncommitted work
 `git reset --hard`, `git checkout -- .`, `git clean -fd`, and similar commands that discard
 untracked or uncommitted changes are forbidden. These destroy work that has no backup. If a

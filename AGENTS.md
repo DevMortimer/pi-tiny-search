@@ -162,6 +162,36 @@ The API key is stored at `~/.pi/agent/pi-tiny-search/auth.json` with owner-only 
 Environment variable `TINYSEARCH_API_KEY` takes precedence. The `/tiny-search login` command
 prompts for the key, verifies it with a test search, and stores it.
 
+## Gotchas
+
+### The .env file uses MONID_API_KEY, not TINYSEARCH_API_KEY
+
+The `.env` file has `MONID_API_KEY=...` but the code reads `TINYSEARCH_API_KEY`. When running
+scripts or evals that need the key, export it explicitly:
+
+```bash
+export TINYSEARCH_API_KEY="$(grep '^MONID_API_KEY=' .env | cut -d= -f2-)"
+```
+
+### keySituation tests must handle stored auth.json
+
+The `keySituation` test deletes `TINYSEARCH_API_KEY` and expects `kind: "missing"`. But if
+`~/.pi/agent/pi-tiny-search/auth.json` exists on disk, `keySituation()` returns `stored` instead.
+The test temporarily moves auth.json aside. When writing tests that call `keySituation()`,
+always account for the stored key file — it exists on every developer machine.
+
+### Monid API rejects unknown fields
+
+The API validates request bodies strictly. Sending extra fields (like internal categorization
+tags) causes HTTP 400. Only send the fields defined in the TinyFish API schema. This is
+different from APIs that silently ignore unknown fields.
+
+### Performance is API-bound — don't optimize our code
+
+Benchmarks show ~5ms overhead per request (JSON parse + response mapping). The 1.5–3s latency
+is the Monid API. Don't waste time trying to optimize client-side code for speed — there is
+nothing to gain. Focus on correctness, error handling, and developer experience instead.
+
 ## For extension authors
 
 Every function is a plain TypeScript function. The client, credentials, and login modules
