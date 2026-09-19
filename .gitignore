@@ -3,3 +3,4 @@ dist/
 .env
 *.tsbuildinfo
 .local/
+pi-tiny-search.md
