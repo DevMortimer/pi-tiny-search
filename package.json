@@ -1,6 +1,6 @@
 {
   "name": "pi-tiny-search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Instant web search and page fetching for Pi via Monid/TinyFish. No browser, no LLM summarization — just fast structured results.",
   "type": "module",
   "license": "MIT",

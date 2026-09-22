@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## Unreleased
 
+## 0.1.1
+
+### Changed
+
+- Rewrote `tiny_search` and `tiny_fetch` tool descriptions for situation-driven tool discovery.
+
+### Added
+
 - Initial project scaffold.
 - `tiny_search` tool: instant web search via TinyFish.
 - `tiny_fetch` tool: page content extraction via TinyFish.
