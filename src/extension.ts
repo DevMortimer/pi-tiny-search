@@ -51,7 +51,7 @@ export default function tinySearchExtension(pi: ExtensionAPI): void {
   pi.registerTool({
     name: "tiny_search",
     label: "Web Search",
-    description: "Search the web via TinyFish. Returns structured results (title, url, snippet, site_name). No browser, no LLM summarization — instant API call. Set domain_type to web (default), news, or research_paper. Filters: location, language, include/exclude_domains, recency_minutes, after_date/before_date. Page 0-10. Pass purpose to sharpen ranking.",
+    description: "Structured results with title, url, snippet, and site_name from a fast web search API. Use when: you encounter an API, library, or CLI you do not know or that is newer than your training data; you need a version number, changelog entry, or release date; the repository contains an error message or stack trace you cannot explain; the user asks a factual question the repository cannot answer. Not for code in this repository — read the files instead. Input: a query string, optionally with filters for domain type, language, date range, and result count. Examples: 'what is the latest version of zod', 'why does my Next.js build fail with MODULE_NOT_FOUND', 'is there a stable Bun test runner yet'.",
     promptSnippet: "Use for web research questions. Prefer {queries:[...]} with 2-4 varied angles over a single query for broader coverage.",
     parameters: searchParameters,
     prepareArguments: args => normalizeSearchArgs(args as Record<string, unknown>),
@@ -86,7 +86,7 @@ export default function tinySearchExtension(pi: ExtensionAPI): void {
   pi.registerTool({
     name: "tiny_fetch",
     label: "Web Fetch",
-    description: "Fetch a URL via TinyFish and return clean extracted text. Renders JavaScript-heavy pages in a real browser. Use CSS selectors to extract specific content. Free endpoint.",
+    description: "Clean extracted text from a web page, rendered with a real browser so JavaScript-heavy sites work. Use when: a search result or the user provides a URL you need to read; documentation lives on a website rather than in the repository; the content must be quoted exactly rather than recalled from memory. Not for code in this repository — read the files instead. Input: one or more URLs, with optional CSS selectors to extract specific sections. Examples: 'fetch the React 19 migration guide at this URL', 'read the README from github.com/vercel/next.js', 'grab the changelog section from that release page'.",
     promptSnippet: "Use to fetch readable or raw URL content after a web_search result gives you URLs.",
     parameters: fetchParameters,
     prepareArguments: args => normalizeFetchArgs(args as Record<string, unknown>),
